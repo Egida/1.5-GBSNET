@@ -6,3 +6,6 @@ also its filled with custom methods
 with instant attack power 
 just please dont modify the source theres nocredits so dont worry about that if your a skid 
 its ready just to host all you need is a linux console & python 3.7+
+
+image:
+<img src="Capture999.PNG"/>
