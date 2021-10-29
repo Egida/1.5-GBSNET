@@ -8,6 +8,7 @@ import random
 import threading
 import getpass
 import os
+import fade
 import colorama
 from colorama import *
 
@@ -150,7 +151,10 @@ def sp(str):
         sys.stdout.write(letter)
         sys.stdout.flush()
         time.sleep(st)
-    print() 
+    print()
+def fader(str):
+    faded_text = fade.fire(str)
+    print(faded_text) 
 def synsender(host, port, timer, payload):
     global uaid
     global udp
@@ -320,8 +324,7 @@ def httpsender(host, port, timer):
     #tattacks += 1
 
     sock.connect((host, int(port)))
-    
-    while time.time() < timeout and icmp and attack:
+    while time.time() < timeout and attack:
         try:
             sock.send( f'GET / HTTP/1.1\r\nHost: {host}\r\n\r\n'.encode() )
         except TimeoutError:
@@ -375,7 +378,8 @@ def main():
         sinput = sin.split(" ")[0]
         if sinput == "clear":
             os.system ("clear")
-            print (altbanner)
+            faded_text = fade.random(altbanner)
+            print(faded_text)
             main()
         elif sinput == "help":
             print (help)
@@ -746,7 +750,7 @@ try:
     users = ["root", "guest", "me", "ghstdev"]
     clear = "clear"
     os.system (clear)
-    username = getpass.getpass ("[+] Username: ")
+    username = getpass.getpass (f"[+] Username: ")
     if username in users:
         user = username
     else:
@@ -766,35 +770,36 @@ try:
             cookie.write("DIE")
             time.sleep(2)
             os.system (clear)
-            banner = f"""{Fore.RED}
+            banner = f"""
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ - Type {Fore.WHITE} HELP {Fore.RED} For Commands  - ]   
-░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                [- Username: {Fore.WHITE}{username}{Fore.RED} Grade: {Fore.WHITE}{grade}{Fore.RED} -]
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {username} Grade: {grade} -]   - [ - Type  HELP For Commands  - ]   
+░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
  ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
  ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
    ░       ░  ░       ░ ░          ░ ░           ░    
  ░                    ░                    
-{Fore.RESET}           
+           
 """
             try:
                 os.system ("clear")
-                banner = f"""{Fore.RED}
+                banner = f"""
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ - Type {Fore.WHITE} HELP {Fore.RED} For Commands  - ]   
-░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                [- Username: {Fore.WHITE}{username}{Fore.RED} Grade: {Fore.WHITE}{grade}{Fore.RED} -]
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {username} Grade: {grade} -]   - [ - Type  HELP For Commands  - ]   
+░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
  ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
  ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
    ░       ░  ░       ░ ░          ░ ░           ░    
  ░                    ░                    
-{Fore.RESET}           
+           
 """
-                print (banner)
+                faded_text = fade.fire(banner)
+                print(faded_text)
                 main()
             except KeyboardInterrupt:
                 
@@ -810,20 +815,21 @@ try:
             os.system (clear)
             try:
                 os.system ("clear")
-                banner = f"""{Fore.RED}
+                banner = f"""
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒                [ - Type {Fore.WHITE} HELP {Fore.RED} For Commands  - ]   
-░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                [- Username: {Fore.WHITE}{username}{Fore.RED} Grade: {Fore.WHITE}{grade}{Fore.RED} -]
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {username} Grade: {grade} -]   - [ - Type  HELP For Commands  - ]   
+░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
  ░ ▒  ▒  ░ ░  ░ ░       ░  ▒     ░ ▒ ▒░ ░ ░░   ░ ▒░   
  ░ ░  ░    ░    ░ ░   ░        ░ ░ ░ ▒     ░   ░ ░    
    ░       ░  ░       ░ ░          ░ ░           ░    
  ░                    ░                    
-{Fore.RESET}           
+           
 """
-                print (banner)
+                faded_text = fade.pinkred(banner)
+                print(faded_text)
                 main()
             except KeyboardInterrupt:
                 main()
