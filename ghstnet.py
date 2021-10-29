@@ -13,11 +13,7 @@ import colorama
 from colorama import *
 
 
-sys.stdout.write("\x1b]2;GHSTNET || Loaded: 19\x07")
-def modifications():
-    print ("Contact Misfortune or Reaper the script is currently under maitnance")
-    on_enter = input("Please press enter to leave")
-    exit()
+
 #column:65
 method = """\033[91m
 ╔════════════════════════════════════════════════════════╗
