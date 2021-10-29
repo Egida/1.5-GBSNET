@@ -834,7 +834,7 @@ try:
             except KeyboardInterrupt:
                 main()
         else:
-            print ("[+] Incorrect, exiting")
+            print ("[+] Incorrect, exiting...")
             exit()
 except KeyboardInterrupt:
     exit()
