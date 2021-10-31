@@ -30,7 +30,7 @@ method = """\033[91m
 ║ \033[00mBNET <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m USE INFO CMD\033[91m ║
 ║ \033[00mNULL <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
 ║ \033[00mSPIKE <HOST> <PORT> <TIMEOUT>        \033[91m  | \033[00m CHTTP ATTACK\033[91m ║
-║ \033[00mHTTP-BURST <HOST'S IP>   <TIMEOUT>  \033[91m   |\033[00m CHTTP  ATTACK\033[91m ║
+║ \033[00mHTTP-BURST <HOST'S IP>  <TIMEOUT>  \033[91m    | \033[00m CHTTP ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
