@@ -30,7 +30,7 @@ method = """\033[91m
 ║ \033[00mBNET <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m USE INFO CMD\033[91m ║
 ║ \033[00mNULL <HOST> <PORT> <TIMEOUT>        \033[91m   | \033[00m CNUKE ATTACK\033[91m ║
 ║ \033[00mSPIKE <HOST> <PORT> <TIMEOUT>        \033[91m  | \033[00m CHTTP ATTACK\033[91m ║
-║ \033[00mHTTP-BURST <HOST"S IP>    <TIMEOUT> \033[91m   | \033[00m HTTP  ATTACK\033[91m ║
+║ \033[00mHTTP-BURST <HOST'S IP>   <TIMEOUT> \033[91m   | \033[00m CHTTP  ATTACK\033[91m ║
 ║═══════════════════════FREE═METHOD══════════════════════║              
 ║ \033[00mSYN  <HOST> <PORT> <TIMEOUT> <SIZE>  \033[91m  |\033[00m SYN  ATTACK\033[91m   ║
 ╚════════════════════════════════════════════════════════╝\033[00m
@@ -39,7 +39,7 @@ method = """\033[91m
 info = """
 [ ghstinfo ] welcome to the new net with little power bit still enough to hit a home and web
 [ ghstinfo ] bnet info: it kills botnets quite well
-[ ghstinfo ] all cslap, cnuke, bnet, spike methods are custom"""
+[ ghstinfo ] all methods with c before the main word are custom methods"""
  
 version = "3.2"
  
